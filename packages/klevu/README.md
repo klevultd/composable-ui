@@ -8,66 +8,6 @@ experience. This guide outlines how to integrate Klevu components into the
 Composable-UI project, enhancing your site with Klevu's robust search
 functionalities.
 
-## Installation and Setup
-
-1. **Navigating to the Project Directory:** Open your terminal and navigate to
-   your local `composable-ui` project directory:
-   ```bash
-   cd path/to/composable-ui
-   ```
-
-2. **Installing Required Packages:** Use `pnpm` to install the necessary Klevu
-   packages:
-   ```bash
-   pnpm install @klevu/ui @klevu/ui-react @klevu/core
-   ```
-
-3. **Copying Icons:** Copy the Klevu UI icons from the `node_modules` to the
-   `public/assets` directory:
-   ```bash
-   cp -R node_modules/@klevu/ui/dist/klevu-ui/assets/ public/assets/
-   ```
-
-4. **Setting Up Klevu Components:** Create the `klevu` folder inside
-   `src/components` and copy the `klevu.tsx` file:
-   ```bash
-   mkdir -p src/components/klevu
-   cp ../packages/klevu/copythese/klevu.tsx src/components/klevu/klevu.tsx
-   ```
-
-5. **Configuring Category Pages:** Copy and replace the `[slug].tsx` file for
-   category pages:
-   ```bash
-   cp ../packages/klevu/copythese/[slug].tsx src/pages/category/[slug].tsx
-   ```
-
-6. **Setting Up the Search Page:** Copy the `search.tsx` file to set up the
-   search functionality:
-   ```bash
-   cp ../packages/klevu/copythese/search.tsx src/pages/search.tsx
-   ```
-
-7. **Adding QuickSearch Component:** Integrate the `QuickSearch` component into
-   the header:
-   - First, open `composable-ui/src/components/layout/header.tsx`.
-   - Import the `QuickSearch` component:
-     ```javascript
-     import { QuickSearch } from 'components/klevu/klevu';
-     ```
-   - Add the `<QuickSearch />` component to the desired location within the
-     `header.tsx` file.
-
-## Running the Project
-After completing the above steps, you can start the project to see the Klevu
-components in action:
-```bash
-pnpm run dev
-```
-
-This will launch the Composable-UI project with Klevu's enhanced search
-capabilities, providing a seamless and efficient search experience for your
-users.
-
 # Data Indexing in Klevu
 
 ## Overview
@@ -76,6 +16,17 @@ Klevu provides a robust solution for indexing data to enhance the search
 functionality in e-commerce platforms. This process involves the categorization
 and organization of your site's content, making it searchable and improving
 overall user experience.
+
+## Account
+
+Before starting you need a Klevu account. [You can create a trial account 
+that is free for 14 days.](https://box.klevu.com/merchant/signup)
+
+Please select API as integration method when welcome wizard asks you.
+
+Find API and REST key from following place:
+
+![Klevu Merchant Center keys](./docimages/kmcinfo.png)
 
 ## Indexing Script
 Located in the scripts folder, Klevu offers an alternative method for indexing
@@ -113,3 +64,86 @@ pnpm run klevu-setup
 
 This command will initiate the script, which interacts with Klevu's API to index
 your site's data, preparing it for an enhanced search experience.
+
+## Getting the `display` key to work
+
+`display` is a special property in the indexing. It can be used to pass any data
+from to the frontend. But for it to work you need contact `support@klevu.com` and
+request `additionalDataToReturn` to be enabled.
+
+# Installation and Setup
+
+1. **Navigating to the Project Directory:** Open your terminal and navigate to
+   your local `composable-ui` project directory:
+   ```bash
+   cd path/to/composable-ui
+   ```
+
+2. **Copy files from Klevu project to composable ui:** Move to Klevu package folder and copy files with automatic script
+   ```bash
+   cd packages/klevu
+   pnpm run copyfiles
+   ```
+
+3. **Go to composable-ui frontend project:**
+   ```bash
+   cd ../../composable-ui
+   ```
+
+4. **Set the env variables:** Set the `.env` variables from the Klevu project you created. 
+
+   ```shell
+   NEXT_PUBLIC_KLEVU_SEARCH_URL=YOUR_KLEVU_SEARCH_URL
+   NEXT_PUBLIC_KLEVU_SEARCH_API_KEY=YOUR_KLEVU_SEARCH_API_KEY
+   NEXT_PUBLIC_KLEVU_ASSETS_PATH=http://localhost:3000
+   ```
+
+   `SEARCH_URL` format is following `https://[your Klevu API v2 search url]/cs/v2/search`
+
+   You can find the Search URL in the same Store settings as the `API key` and `REST key`
+
+   ![API URL example image](./docimages/searchurl_example.png)
+
+4. **Installing Required Packages:** Use `pnpm` to install the necessary Klevu
+   packages:
+   ```bash
+   pnpm install @klevu/ui @klevu/ui-react @klevu/core
+   ```
+
+5. **Adding styles:** Add following two imports to `composable-ui/pages/_app.tsx`
+
+   ```typescript
+   import '@klevu/ui/dist/klevu-ui/klevu-ui.css'
+   import 'klevustyle.css'
+   ```
+
+   You can modify the look and feel of the Klevu Components with `klevustyle.css`
+
+
+6. **Adding QuickSearch Component:** Integrate the `QuickSearch` component into
+   the header:
+   - First, open `composable-ui/src/components/layout/header.tsx`.
+   - Import the `QuickSearch` component:
+     ```javascript
+     import { QuickSearch } from 'components/klevu/klevu';
+     ```
+   - Add the `<QuickSearch />` component to the desired location within the
+     `header.tsx` file.
+
+   Here is a example of placement code: ![Example of QuickSearch code](./docimages/quicksearch_example.png)
+
+7. **Adding optional premade styles:** 
+
+   If you wish to use 
+
+## Running the Project
+After completing the above steps, you can start the project to see the Klevu
+components in action:
+```bash
+pnpm run dev
+```
+
+This will launch the Composable-UI project with Klevu's enhanced search
+capabilities, providing a seamless and efficient search experience for your
+users.
+

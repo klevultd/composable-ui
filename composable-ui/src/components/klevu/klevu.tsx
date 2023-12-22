@@ -13,9 +13,13 @@ import { Box, Container } from '@chakra-ui/react'
 import { CategoryProductCard } from '../product-listing-page'
 
 // Change these values to your own
-const apiKey = 'klevu-169996201202016874' // Can be found from Klevu Merchant Center
-const url = 'https://eucs33v2.ksearchnet.com/cs/v2/search' // Can be found from Klevu Merchant Center
-const assetsPath = 'http://localhost:3000' // Path assets folder where Klevu Icons are located
+const apiKey = process.env.NEXT_PUBLIC_KLEVU_SEARCH_API_KEY
+const url = process.env.NEXT_PUBLIC_KLEVU_SEARCH_URL
+const assetsPath = process.env.NEXT_PUBLIC_KLEVU_ASSETS_PATH
+
+if (!apiKey || !url || !assetsPath) {
+  throw new Error('Klevu API key, URL or assets path is not defined in .env')
+}
 
 const Init = (props: { children: any }) => {
   let router: any = null
@@ -93,14 +97,14 @@ function CustomGridRenderer(props: { products: KlevuRecord[] }) {
     <KlevuProductGrid>
       {props.products.map((product) => {
         // additionalDataToReturn is JSON have been indexed to display key on the product.
-        const originalProductJSON = JSON.parse(product.additionalDataToReturn).default
+        const originalProductJSON = JSON.parse(
+          product.additionalDataToReturn
+        ).default
         return (
           <KlevuProduct key={product.id} product={product} isWrapper>
             {/* Above: Components should be put inside KlevuProduct that has `isWrapper` prop defined. It means that it's empty shell. */}
             {/* Below: Here you can use your own components */}
-            <CategoryProductCard
-              product={originalProductJSON}
-            />
+            <CategoryProductCard product={originalProductJSON} />
           </KlevuProduct>
         )
       })}
